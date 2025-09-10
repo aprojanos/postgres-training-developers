@@ -76,3 +76,7 @@ If the data source has been added we can build a dashboard:
 Trainig examples are available in the folder:
 
 *postgres/examples/*
+
+Download flights data:
+https://drive.google.com/file/d/1kM7J9WcOl7IDjLOeBZKovQTrSU4jpQMn/view?usp=sharing
+

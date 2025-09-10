@@ -1,0 +1,89 @@
+{
+  "id": null,
+  "uid": "timescale-cdr-09",
+  "title": "TimescaleDB Cloud",
+  "tags": ["timescaledb", "telecom"],
+  "timezone": "browser",
+  "schemaVersion": 31,
+  "version": 1,
+  "refresh": "5m",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Total Calls per Hour",
+      "type": "timeseries",
+      "datasource": "Timescale Cloud",
+      "targets": [
+        {
+          "format": "time_series",
+          "rawSql": "SELECT time_bucket('1 hour', call_start) AS time, COUNT(*) AS total_calls FROM call_detail_records_ts WHERE $__timeFilter(call_start) GROUP BY time ORDER BY time;",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 2,
+      "title": "Calls per Network Provider",
+      "type": "barchart",
+      "datasource": "Timescale Cloud",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SELECT network, COUNT(*) AS total_calls FROM call_detail_records_ts WHERE $__timeFilter(call_start) GROUP BY network ORDER BY total_calls DESC;",
+          "refId": "B"
+        }
+      ],
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 10,
+        "y": 0
+      }
+    },
+    {
+      "id": 3,
+      "title": "Average Call Duration",
+      "type": "gauge",
+      "datasource": "Timescale Cloud",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SELECT AVG(duration) AS avg_duration FROM call_detail_records_ts WHERE $__timeFilter(call_start);",
+          "refId": "C"
+        }
+      ],
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 0,
+        "y": 10
+      }
+    },
+    {
+      "id": 4,
+      "title": "Call Records Table",
+      "type": "table",
+      "datasource": "Timescale Cloud",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SELECT call_start, caller, receiver, duration, network FROM call_detail_records_ts WHERE $__timeFilter(call_start) ORDER BY call_start DESC LIMIT 100;",
+          "refId": "D"
+        }
+      ],
+      "gridPos": {
+        "h": 5,
+        "w": 15,
+        "x": 5,
+        "y": 10
+      }
+    }
+  ]
+}
+

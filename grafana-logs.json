@@ -1,0 +1,91 @@
+{
+    "id": null,
+    "uid": "postgres-logs",
+    "title": "PostgreSQL Logs & Performance",
+    "tags": ["postgresql", "logs", "performance"],
+    "timezone": "browser",
+    "schemaVersion": 36,
+    "version": 1,
+    "panels": [
+      {
+        "title": "Active Connections",
+        "type": "graph",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+        "targets": [
+          {
+            "expr": "pg_stat_database_numbackends",
+            "legendFormat": "{{datname}}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "title": "Slow Queries (> 1s)",
+        "type": "graph",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+        "targets": [
+          {
+            "expr": "rate(pg_stat_statements_max_exec_time[5m])",
+            "legendFormat": "{{queryid}}",
+            "refId": "B"
+          }
+        ]
+      },
+      {
+        "title": "Deadlocks",
+        "type": "singlestat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+        "targets": [
+          {
+            "expr": "pg_stat_database_deadlocks",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "title": "Autovacuum Activity",
+        "type": "graph",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+        "targets": [
+          {
+            "expr": "rate(pg_stat_database_xact_commit[5m])",
+            "legendFormat": "Commits",
+            "refId": "D"
+          },
+          {
+            "expr": "rate(pg_stat_database_xact_rollback[5m])",
+            "legendFormat": "Rollbacks",
+            "refId": "E"
+          }
+        ]
+      },
+      {
+        "title": "Disk Space Usage",
+        "type": "graph",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+        "targets": [
+          {
+            "expr": "pg_database_size_bytes / 1024 / 1024",
+            "legendFormat": "{{datname}}",
+            "refId": "F"
+          }
+        ]
+      }
+    ]
+}
+
